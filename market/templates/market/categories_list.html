@@ -1,0 +1,41 @@
+{% extends 'market/base.html' %}
+
+{% block title %}Categories - MaxMarket{% endblock %}
+
+{% block content %}
+  <button
+    onclick="window.history.back()"
+    class="mb-4 px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 text-sm font-medium"
+  >
+    ← Назад
+  </button>
+
+  <h1 class="text-2xl font-bold mb-6">Categories</h1>
+  <ul class="space-y-4 mb-20">  {# добавил нижний margin, чтобы не перекрывать контент пагинацией #}
+    {% for category in categories %}
+      <li class="p-4 border rounded hover:shadow-md cursor-pointer">
+        <a href="{% url 'category_detail' category.id %}" class="block">
+          <h2 class="text-lg font-semibold text-[#111418]">{{ category.name }}</h2>
+          {% if category.description %}
+            <p class="text-sm text-gray-600 mt-1">{{ category.description }}</p>
+          {% endif %}
+        </a>
+      </li>
+    {% empty %}
+      <li>No categories available.</li>
+    {% endfor %}
+  </ul>
+
+  <!-- Закрепленная пагинация снизу -->
+  <div class="fixed bottom-0 left-0 w-full bg-white border-t border-gray-300 py-3 flex justify-center space-x-3 text-sm z-50 shadow-md">
+    {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}" class="px-3 py-1 border rounded hover:bg-gray-200">← Назад</a>
+    {% endif %}
+
+    <span class="px-3 py-1 border rounded bg-gray-100">Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+
+    {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}" class="px-3 py-1 border rounded hover:bg-gray-200">Вперёд →</a>
+    {% endif %}
+  </div>
+{% endblock %}

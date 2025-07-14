@@ -1,0 +1,59 @@
+{% extends 'market/base.html' %}
+
+{% block title %}{{ category.name }} - MaxMarket{% endblock %}
+
+{% block content %}
+  <button
+    onclick="window.location.href='{% url 'categories' %}'"
+    class="mb-4 px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 text-sm font-medium"
+  >
+    ← Назад к категориям
+  </button>
+
+  <h1 class="text-3xl font-bold mb-4">{{ category.name }}</h1>
+
+  {% if category.description %}
+    <p class="mb-6 text-gray-700">{{ category.description }}</p>
+  {% endif %}
+
+  {% if products %}
+    <ul class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
+      {% for product in products %}
+        <li class="border rounded p-4 hover:shadow-md cursor-pointer flex flex-col">
+          <h2 class="text-xl font-semibold mb-2">{{ product.name }}</h2>
+
+          {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="mb-2 max-h-40 object-contain" />
+          {% endif %}
+
+          <p class="text-gray-600 mb-2 flex-grow">{{ product.description|truncatewords:20 }}</p>
+
+          <p class="font-bold text-lg mb-4">${{ product.price }}</p>
+
+          <form action="{% url 'add_to_cart' product.id %}" method="post" class="inline">
+            {% csrf_token %}
+            <button type="submit"
+                    class="w-full px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 font-bold transition">
+              В корзину 🛒
+            </button>
+          </form>
+        </li>
+      {% endfor %}
+    </ul>
+
+    <!-- Пагинация -->
+    <div class="fixed bottom-0 left-0 w-full bg-white border-t border-gray-300 py-3 flex justify-center space-x-3 text-sm z-50 shadow-md">
+      {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}" class="px-3 py-1 border rounded hover:bg-gray-200">← Назад</a>
+      {% endif %}
+
+      <span class="px-3 py-1 border rounded bg-gray-100">Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+
+      {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}" class="px-3 py-1 border rounded hover:bg-gray-200">Вперёд →</a>
+      {% endif %}
+    </div>
+  {% else %}
+    <p>Нет доступных товаров в этой категории.</p>
+  {% endif %}
+{% endblock %}

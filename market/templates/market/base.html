@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}MaxMarket{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  </head>
+  <body>
+    <div class="min-h-screen bg-white font-sans">
+
+      <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#f0f2f5] px-10 py-3">
+        <div class="flex items-center gap-4 text-[#111418]">
+          <div class="size-4">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- svg icon -->
+            </svg>
+          </div>
+          <h2 class="text-[#111418] text-lg font-bold leading-tight tracking-[-0.015em]">MaxMarket</h2>
+        </div>
+
+        <div class="flex flex-1 justify-end gap-8">
+          <div class="flex items-center gap-9">
+            <a href="{% url 'home' %}" class="text-[#111418] text-sm font-medium hover:text-[#248bf3]">Home</a>
+            <a href="{% url 'categories' %}" class="text-[#111418] text-sm font-medium hover:text-[#248bf3]">Categories</a>
+            <a href="{% url 'deals' %}" class="text-[#111418] text-sm font-medium hover:text-[#248bf3]">Deals</a>
+            <a href="{% url 'services' %}" class="text-[#111418] text-sm font-medium hover:text-[#248bf3]">Services</a>
+          </div>
+
+          <div class="flex gap-2">
+            {% if user.is_authenticated %}
+              <div class="flex items-center text-sm text-[#111418]">{{ user.username }}</div>
+
+              <a href="{% url 'view_cart' %}" class="flex items-center px-4 py-2 bg-[#248bf3] text-white rounded-lg hover:bg-[#1a7cd9] text-sm font-bold">
+                🛒 Cart
+              </a>
+
+              <a href="{% url 'logout' %}" class="flex items-center px-4 py-2 bg-[#f0f2f5] rounded-lg hover:bg-[#e0e2e5] text-sm font-bold">
+                Log out
+              </a>
+            {% else %}
+              <a href="{% url 'login' %}" class="flex items-center px-4 py-2 bg-[#248bf3] text-white rounded-lg hover:bg-[#1a7cd9] text-sm font-bold">
+                Log in
+              </a>
+              <a href="{% url 'signup' %}" class="flex items-center px-4 py-2 bg-[#f0f2f5] text-[#111418] rounded-lg hover:bg-[#e0e2e5] text-sm font-bold">
+                Sign up
+              </a>
+            {% endif %}
+          </div>
+        </div>
+      </header>
+
+      <main class="px-10 py-8">
+        {% block content %}
+        <!-- Контент страницы -->
+        {% endblock %}
+      </main>
+
+    </div>
+  </body>
+</html>

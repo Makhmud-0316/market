@@ -1,0 +1,27 @@
+{% extends 'market/base.html' %}
+
+{% block content %}
+<div class="max-w-md mx-auto py-10">
+  <h2 class="text-2xl font-bold mb-6">Log in to MaxMarket</h2>
+  <form method="post" class="space-y-4">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+
+    <div>
+      {{ form.username.label_tag }}
+      {{ form.username }}
+      {{ form.username.errors }}
+    </div>
+
+    <div>
+      {{ form.password.label_tag }}
+      {{ form.password }}
+      {{ form.password.errors }}
+    </div>
+
+    <button type="submit" class="w-full py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+      Log In
+    </button>
+  </form>
+</div>
+{% endblock %}
